@@ -299,9 +299,16 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
             className="pointer-events-auto w-full bg-white/60 dark:bg-slate-950/60 backdrop-blur-2xl border border-slate-200/50 dark:border-slate-700/50 rounded-full shadow-2xl shadow-slate-200/50 dark:shadow-indigo-500/10 overflow-hidden flex items-center justify-center"
           >
             <div className="h-16 flex items-center justify-between w-full px-2">
-              <div className="flex-shrink-0 flex items-center justify-center px-4">
+              <motion.div 
+                layout
+                className="flex-shrink-0 flex items-center justify-center px-4"
+                animate={{ 
+                  flex: (!isScrolled || isNavHovered) ? "0 0 auto" : "1 1 0%" 
+                }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
                 {renderLogo(false)}
-              </div>
+              </motion.div>
               
               <AnimatePresence>
                 {(!isScrolled || isNavHovered) && (
