@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/utils/supabase/client";
+import { LampContainer } from "@/components/ui/lamp";
 
 function getDirectImageUrl(url: string | null | undefined): string {
   if (!url) return '';
@@ -585,13 +586,20 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
 
         {/* CONTACT SECTION */}
         <section id="contact" className="max-w-4xl mx-auto px-6 py-20">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none rounded-3xl p-8 md:p-12 shadow-2xl shadow-indigo-500/5">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's <span className="text-indigo-600 dark:text-indigo-400">Connect</span></h2>
-              <p className="text-slate-600 dark:text-slate-400">I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
-            </motion.div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden shadow-2xl shadow-indigo-500/5">
+            <LampContainer className="pt-2">
+              <motion.div 
+                initial={{ opacity: 0.5, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
+                className="text-center px-6"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Let's <span className="text-indigo-600 dark:text-indigo-400">Connect</span></h2>
+                <p className="text-slate-600 dark:text-slate-400">I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+              </motion.div>
+            </LampContainer>
 
-            <div className="grid md:grid-cols-2 gap-12">
+            <div className="grid md:grid-cols-2 gap-12 p-8 md:p-12 pt-0 md:pt-4">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
