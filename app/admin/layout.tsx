@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Image as ImageIcon, User, Code2, Briefcase, GraduationCap, FolderGit2, Mail, Settings, LogOut, MessageSquare } from "lucide-react";
+import { LayoutDashboard, Image as ImageIcon, User, Code2, Briefcase, GraduationCap, FolderGit2, Mail, Settings, LogOut, MessageSquare, BarChart3 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { createClient } from "@/utils/supabase/client";
 
 const sidebarLinks = [
   { name: "Overview", href: "/admin/dashboard", icon: LayoutDashboard },
+  { name: "Visitor Analytics", href: "/admin/dashboard/analytics", icon: BarChart3 },
   { name: "Hero Section", href: "/admin/dashboard/hero", icon: ImageIcon },
   { name: "About", href: "/admin/dashboard/about", icon: User },
   { name: "Skills", href: "/admin/dashboard/skills", icon: Code2 },
