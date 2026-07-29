@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
-import { Mail, Sun, Moon, MapPin, Download, ChevronRight, ExternalLink } from "lucide-react";
+import { Mail, Sun, Moon, MapPin, Download, ChevronRight, ExternalLink, X, ZoomIn } from "lucide-react";
 import { toast } from "sonner";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -13,6 +13,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/utils/supabase/client";
 import { LampContainer } from "@/components/ui/lamp";
+import {
+  TextRevealCard,
+  TextRevealCardDescription,
+  TextRevealCardTitle,
+} from "@/components/ui/text-reveal-card";
 
 function getDirectImageUrl(url: string | null | undefined): string {
   if (!url) return '';
@@ -27,7 +32,7 @@ function getDirectImageUrl(url: string | null | undefined): string {
 
 // Dummy Data Fallbacks
 const dummyHero = {
-  name: "Muhammad Izzat", tagline: "Fresh Graduate | Software Engineer & AI Enthusiast", location: "Jombang, Jawa Timur, Indonesia",
+  name: "Muhammad Izzat", tagline: "Fresh Graduate", location: "Jombang, Jawa Timur, Indonesia",
   photoUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Izzat&backgroundColor=6366f1", cvUrl: "#",
 };
 
@@ -117,6 +122,7 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isNavHovered, setIsNavHovered] = useState(false);
   const supabase = createClient();
   const { scrollYProgress } = useScroll();
@@ -371,14 +377,24 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
                 />
               </Badge>
             </motion.div>
-            <motion.h1 
+            <motion.div 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.3 }}
-              className="text-5xl md:text-7xl font-bold tracking-tight"
+              className="w-full my-4"
             >
-              Hi, I'm <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">{heroData.name}</span>
-            </motion.h1>
+              <TextRevealCard
+                text="Hi, My Name Is"
+                revealText={heroData.name}
+              >
+                <TextRevealCardTitle>
+                  Software Engineer & AI Enthusiast
+                </TextRevealCardTitle>
+                <TextRevealCardDescription>
+                  Hover or drag across to reveal my full name
+                </TextRevealCardDescription>
+              </TextRevealCard>
+            </motion.div>
             <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 flex flex-wrap justify-center md:justify-start overflow-hidden">
-              {heroData.tagline?.split("").map((char: string, i: number) => (
+              {(heroData.tagline?.replace(/\s*\|\s*Software Engineer\s*&\s*AI Enthusiast/i, "") || "Fresh Graduate").split("").map((char: string, i: number) => (
                 <motion.span
                   key={i}
                   initial={{ opacity: 0, display: "none" }}
@@ -422,7 +438,10 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
             initial={{ opacity: 0, scale: 0.9, rotate: -5 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
             className="flex-1 flex justify-center md:justify-end"
           >
-            <div className="relative w-64 h-80 md:w-80 md:h-[24rem] rounded-3xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-indigo-500 p-1 animate-gradient bg-[length:200%_auto] shadow-2xl shadow-indigo-500/20 group cursor-pointer hover:-translate-y-2 transition-transform duration-500">
+            <div 
+              onClick={() => setIsPreviewOpen(true)}
+              className="relative w-64 h-80 md:w-80 md:h-[24rem] rounded-3xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-indigo-500 p-1 animate-gradient bg-[length:200%_auto] shadow-2xl shadow-indigo-500/20 group cursor-pointer hover:-translate-y-2 transition-transform duration-500"
+            >
               <div className="w-full h-full rounded-[1.4rem] bg-slate-50 dark:bg-slate-950 overflow-hidden relative">
                 <img src={getDirectImageUrl(heroData.photoUrl)} alt={heroData.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -672,6 +691,47 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
           >
             <ChevronRight className="w-6 h-6 -rotate-90" />
           </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* PROFILE IMAGE PREVIEW MODAL */}
+      <AnimatePresence>
+        {isPreviewOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsPreviewOpen(false)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 10 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-2xl w-full rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 p-2 shadow-2xl cursor-default"
+            >
+              <button
+                onClick={() => setIsPreviewOpen(false)}
+                className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-slate-950/80 text-slate-300 hover:text-white hover:bg-slate-950 transition-colors border border-white/10 shadow-lg"
+                aria-label="Close preview"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="overflow-hidden rounded-2xl max-h-[75vh] flex items-center justify-center bg-slate-950/50">
+                <img
+                  src={getDirectImageUrl(heroData.photoUrl)}
+                  alt={heroData.name}
+                  className="w-full h-full object-contain max-h-[75vh]"
+                />
+              </div>
+              <div className="p-4 text-center">
+                <p className="text-white font-semibold text-lg">{heroData.name}</p>
+                <p className="text-indigo-400 text-xs tracking-wider uppercase">Profile Picture</p>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
