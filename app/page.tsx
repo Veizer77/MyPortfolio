@@ -83,16 +83,38 @@ export default async function Page() {
     supabase.from('contact').select('*').single()
   ]);
 
+  const personName = hero?.name || "Muhammad Izzat Farahidi";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: personName,
+    jobTitle: hero?.tagline || "Software Engineer & AI Enthusiast",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://portfolio-izzat.vercel.app",
+    image: hero?.photo_url || "",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: hero?.location || "Jombang, Jawa Timur, Indonesia",
+    },
+    sameAs: [contact?.github_url, contact?.linkedin_url].filter(Boolean),
+    description: about?.summary || "Portfolio website of Muhammad Izzat Farahidi",
+  };
+
   return (
-    <PortfolioClient 
-      hero={hero}
-      about={about}
-      skills={skills}
-      experience={experience}
-      education={education}
-      projects={projects}
-      contact={contact}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PortfolioClient 
+        hero={hero}
+        about={about}
+        skills={skills}
+        experience={experience}
+        education={education}
+        projects={projects}
+        contact={contact}
+      />
+    </>
   );
 }
 
