@@ -18,6 +18,7 @@ import {
   TextRevealCardDescription,
   TextRevealCardTitle,
 } from "@/components/ui/text-reveal-card";
+import { ShiningText } from "@/components/ui/shining-text";
 
 function getDirectImageUrl(url: string | null | undefined): string {
   if (!url) return '';
@@ -152,17 +153,15 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
   }, []);
 
   useEffect(() => {
-    // Kunci scroll saat splash screen muncul
     if (showSplash) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     
-    // Hilangkan splash setelah 2.5 detik
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2500);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [showSplash]);
 
@@ -257,38 +256,21 @@ export default function PortfolioClient({ hero, about, skills, experience, educa
         />
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {showSplash && (
           <motion.div
             key="splash"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950"
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950"
           >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col items-center"
             >
-              {renderLogo(true)}
-              <div className="w-48 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden relative">
-                <motion.div
-                  initial={{ width: "0%", x: "-100%" }}
-                  animate={{ width: "100%", x: "0%" }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
-                  className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500"
-                />
-              </div>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="text-slate-500 dark:text-slate-400 mt-6 text-sm tracking-[0.3em] uppercase"
-              >
-                Memuat Portofolio
-              </motion.p>
+              <ShiningText text="Fetch Data..." />
             </motion.div>
           </motion.div>
         )}

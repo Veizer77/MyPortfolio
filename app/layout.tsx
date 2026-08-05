@@ -17,7 +17,9 @@ export const metadata: Metadata = {
   },
   description: "Portfolio of Muhammad Izzat Farahidi — Software Engineer & AI Enthusiast",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/assets/zet.png",
+    shortcut: "/assets/zet.png",
+    apple: "/assets/zet.png",
   },
 };
 
